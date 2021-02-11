@@ -1,7 +1,7 @@
 <template>
   <div>
     <sp-input placeholder="Title" v-model="title" />
-    <div v-for="option in options">
+    <div v-for="option in options" v-bind:key="option">
       <sp-input placeholder="Option" v-model="option.title" />
     </div>
     <sp-button @click.native="add">+ Add option</sp-button>
@@ -33,7 +33,7 @@ export default {
         }
       };
       await this.$store.dispatch("cosmos/entitySubmit", payload);
-        await this.$store.dispatch("cosmos/entityFetch", payload);
+      await this.$store.dispatch("cosmos/entityFetch", payload);
     }
   }
 };

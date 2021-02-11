@@ -1,12 +1,13 @@
 package keeper
 
 import (
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"strconv"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+
+	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/ryandines/voter/x/voter/types"
-    "github.com/cosmos/cosmos-sdk/codec"
 )
 
 // GetPollCount get the total number of poll
@@ -31,7 +32,7 @@ func (k Keeper) GetPollCount(ctx sdk.Context) int64 {
 }
 
 // SetPollCount set the total number of poll
-func (k Keeper) SetPollCount(ctx sdk.Context, count int64)  {
+func (k Keeper) SetPollCount(ctx sdk.Context, count int64) {
 	store := ctx.KVStore(k.storeKey)
 	byteKey := []byte(types.PollCountPrefix)
 	bz := []byte(strconv.FormatInt(count, 10))
@@ -42,12 +43,12 @@ func (k Keeper) SetPollCount(ctx sdk.Context, count int64)  {
 func (k Keeper) CreatePoll(ctx sdk.Context, msg types.MsgCreatePoll) {
 	// Create the poll
 	count := k.GetPollCount(ctx)
-    var poll = types.Poll{
-        Creator: msg.Creator,
-        ID:      strconv.FormatInt(count, 10),
-        Title: msg.Title,
-        Options: msg.Options,
-    }
+	var poll = types.Poll{
+		Creator: msg.Creator,
+		ID:      strconv.FormatInt(count, 10),
+		Title:   msg.Title,
+		Options: msg.Options,
+	}
 
 	store := ctx.KVStore(k.storeKey)
 	key := []byte(types.PollPrefix + poll.ID)
@@ -55,7 +56,7 @@ func (k Keeper) CreatePoll(ctx sdk.Context, msg types.MsgCreatePoll) {
 	store.Set(key, value)
 
 	// Update poll count
-    k.SetPollCount(ctx, count+1)
+	k.SetPollCount(ctx, count+1)
 }
 
 // GetPoll returns the poll information
@@ -125,7 +126,6 @@ func (k Keeper) GetPollOwner(ctx sdk.Context, key string) sdk.AccAddress {
 	}
 	return poll.Creator
 }
-
 
 // Check if the key exists in the store
 func (k Keeper) PollExists(ctx sdk.Context, key string) bool {
