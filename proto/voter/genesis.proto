@@ -1,0 +1,9 @@
+syntax = "proto3";
+package ryandines.voter.voter;
+
+option go_package = "github.com/ryandines/voter/x/voter/types";
+
+// GenesisState defines the capability module's genesis state.
+message GenesisState {
+}
+
