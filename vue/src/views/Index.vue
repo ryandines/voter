@@ -3,17 +3,19 @@
     <div class="sp-container">
       <sp-sign-in />
       <sp-bank-balances path="ryandines.voter.voter" />
-      <sp-token-send />
+      <sp-token-send /> 
       <!-- this line is used by starport scaffolding # 4 -->
-		  <sp-type-form path="ryandines.voter.voter" type="poll" :fields="[ ['creator', 1, 'string'] , ['title', 2, 'string'] , ['New option', 3, 'string'] ]" />
+      <!-- <poll-form /> -->
+      <sp-type-form path="ryandines.voter.voter" type="poll" :fields="[ ['creator', 1, 'string'] , ['title', 2, 'string'] , ['New option', 3, 'string'] ]" />    
     </div>
   </div>
 </template>
 
 <script>
 import * as sp from "@tendermint/vue";
+import PollForm from "../components/PollForm";
 
 export default {
-  components: { ...sp },
+  components: { ...sp, PollForm },
 };
 </script>
