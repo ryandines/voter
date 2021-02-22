@@ -1,30 +1,30 @@
 package cli
 
 import (
-  
 	"github.com/spf13/cobra"
 
-    "github.com/cosmos/cosmos-sdk/client"
+	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/ryandines/voter/x/voter/types"
 )
 
+// CmdCreatePoll does stuff
 func CmdCreatePoll() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "create-poll [title] [options]",
 		Short: "Creates a new poll",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.MinimumNArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
-      argsTitle := string(args[0])
-      argsOptions := string(args[1])
-      
+			argsTitle := string(args[0])
+			argsOptions := args[1:]
+
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgCreatePoll(clientCtx.GetFromAddress().String(), string(argsTitle), string(argsOptions))
+			msg := types.NewMsgCreatePoll(clientCtx.GetFromAddress().String(), string(argsTitle), argsOptions)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
@@ -34,25 +34,26 @@ func CmdCreatePoll() *cobra.Command {
 
 	flags.AddTxFlagsToCmd(cmd)
 
-    return cmd
+	return cmd
 }
 
+// CmdUpdatePoll does stuff
 func CmdUpdatePoll() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "update-poll [id] [title] [options]",
 		Short: "Update a poll",
-		Args:  cobra.ExactArgs(3),
+		Args:  cobra.MinimumNArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) error {
-            id := args[0]
-      argsTitle := string(args[1])
-      argsOptions := string(args[2])
-      
+			id := args[0]
+			argsTitle := string(args[1])
+			argsOptions := args[2:]
+
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgUpdatePoll(clientCtx.GetFromAddress().String(), id, string(argsTitle), string(argsOptions))
+			msg := types.NewMsgUpdatePoll(clientCtx.GetFromAddress().String(), id, string(argsTitle), argsOptions)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
@@ -62,16 +63,17 @@ func CmdUpdatePoll() *cobra.Command {
 
 	flags.AddTxFlagsToCmd(cmd)
 
-    return cmd
+	return cmd
 }
 
+// CmdDeletePoll does stuff
 func CmdDeletePoll() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "delete-poll [id] [title] [options]",
 		Short: "Delete a poll by id",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-            id := args[0]
+			id := args[0]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -88,5 +90,5 @@ func CmdDeletePoll() *cobra.Command {
 
 	flags.AddTxFlagsToCmd(cmd)
 
-    return cmd
+	return cmd
 }
