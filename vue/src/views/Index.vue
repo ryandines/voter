@@ -5,6 +5,7 @@
       <sp-bank-balances />
       <sp-token-send />
       <!-- this line is used by starport scaffolding # 4 -->
+		<sp-type-form path="ryandines.voter.voter" type="poll" :fields="[ ['creator', 1, 'string'] , ['title', 2, 'string'] , ['options', 3, 'string'] ]" />
     </div>
   </div>
 </template>
