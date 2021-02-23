@@ -2,23 +2,30 @@
 	<div>
 		<div class="container">
 			<SpH3>New {{ type }}</SpH3>
-			<div v-for="(value, key) in fieldsList" :key="key">
-				<SpInput
-					v-model="fieldsList[key]"
-					type="text"
-					:placeholder="title(key)"
-					:disabled="flight"
-				/>
-			</div>
-			<div class="button">
-				<SpButton
-					:loading="flight"
-					:disabled="!valid || !hasAddress || flight"
-					@click="submit"
-				>
-					Create {{ type }}
-				</SpButton>
-			</div>
+            <SpInput
+                v-model="pollTitle"
+                type="text"
+                placeholder="Title"
+                :disabled="flight"
+            />
+            <div v-for="option in options" :key="option.id" >
+                <sp-input placeholder="Option" v-model="option.title"/>
+            </div>
+            <SpButton
+                :loading="flight"
+                :disabled="!hasAddress || flight"
+                @click="add"
+            >
+                Add Option
+            </SpButton>
+            <div class="spacer" />
+            <SpButton
+                :loading="flight"
+                :disabled="!valid || !hasAddress || flight"
+                @click="submit"
+            >
+                Create {{ type }}
+            </SpButton>
 			<SpTypeList :type="type" :path="path" :module="module" />
 		</div>
 	</div>
@@ -32,6 +39,9 @@
 }
 .button {
 	display: inline-block;
+}
+.spacer{
+    height: 10px;
 }
 </style>
 
@@ -60,10 +70,10 @@ export default {
 			type: String,
 			default: ''
 		},
-		fields: {
-			type: Array,
-			default: () => []
-		},
+		// fields: {
+		// 	type: Array,
+		// 	default: () => []
+		// },
 		preflight: {
 			type: Function,
 			default: () => {
@@ -77,8 +87,9 @@ export default {
 	},
 	data: function() {
 		return {
-			fieldsList: {},
-			flight: false
+			flight: false,
+            options: [],
+            pollTitle: ""
 		}
 	},
 	computed: {
@@ -86,22 +97,14 @@ export default {
 			return !!this.$store.state.cosmos.auth.account.address
 		},
 		valid() {
-			return Object.values(this.fieldsList).every(el => {
-				return el.trim().length > 0
-			})
+            let emptyStringArray = this.options.filter( o => o.title == "" );
+            return (this.options.length > 1) && !(emptyStringArray.length) && this.pollTitle;
 		}
 	},
-	created() {
-		;(this.fields || []).forEach(field => {
-			if (field[0] !== 'creator') {
-				this.$set(this.fieldsList, field[0], '')
-			}
-		})
-	},
 	methods: {
-		title(string) {
-			return string.charAt(0).toUpperCase() + string.slice(1)
-		},
+        add() {
+            this.options = [...this.options, { title: "" }];
+        },
 		async submit() {
 			if (this.valid && !this.flight && this.hasAddress) {
 				const { RPC } = this.$store.state.cosmos.env.env
@@ -111,9 +114,11 @@ export default {
 				const type = this.type.charAt(0).toUpperCase() + this.type.slice(1)
 				const typeUrl = `/${this.path}.MsgCreate${type}`
 				let MsgCreate = new Type(`MsgCreate${type}`)
-				this.fields.forEach(f => {
-					MsgCreate = MsgCreate.add(new Field(f[0], f[1], f[2]))
-				})
+                MsgCreate.add(new Field("creator", 1, "string"));
+                MsgCreate.add(new Field("title", 2, "string"));
+                let optionsField = new Field("options", 3, "string");
+                optionsField.repeated = true;
+                MsgCreate.add(optionsField);
 				const registry = new Registry([[typeUrl, MsgCreate]])
 				const client = await SigningStargateClient.connectWithWallet(
 					RPC,
@@ -122,9 +127,10 @@ export default {
 				)
 				const msg = {
 					typeUrl,
-					value: {
+					value: { 
 						creator: from_address,
-						...this.fieldsList
+                        title: this.pollTitle,
+                        options: this.options.map(o => o.title)
 					}
 				}
 				const fee = {
@@ -143,9 +149,8 @@ export default {
 					console.log(e)
 				}
 				this.flight = false
-				Object.keys(this.fieldsList).forEach(f => {
-					this.fieldsList[f] = ''
-				})
+                this.options = []
+                this.pollTitle = ""
 			}
 		}
 	}
