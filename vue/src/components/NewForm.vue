@@ -70,10 +70,6 @@ export default {
 			type: String,
 			default: ''
 		},
-		// fields: {
-		// 	type: Array,
-		// 	default: () => []
-		// },
 		preflight: {
 			type: Function,
 			default: () => {
