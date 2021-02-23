@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<SpH3>List of {{ type }} items {{ module && `in module ${module}` }}</SpH3>
+		<SpH3>List of {{ type }}s {{ module && `in module ${module}` }}</SpH3>
 		<div v-for="instance in instanceList" :key="instance.id" class="item">
 			<div v-for="(value, key) in instance" :key="key" class="item__field">
 				<div class="item__field__key">{{ key }}:</div>

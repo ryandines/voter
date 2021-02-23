@@ -2,13 +2,13 @@
   <div>
     <div class="sp-container">
       <sp-sign-in />
-      <sp-bank-balances path="ryandines.voter.voter" />
-      <sp-token-send /> 
+      <!-- <sp-bank-balances path="ryandines.voter.voter" /> -->
+      <!-- <sp-token-send />  -->
       <!-- this line is used by starport scaffolding # 4 -->
-      <!-- <new-form 
+      <new-form 
         path="ryandines.voter.voter" t
         type="poll"
-        /> -->
+        />
       <!-- <poll-list />  -->
     </div>
   </div>

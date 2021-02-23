@@ -1,0 +1,31 @@
+syntax = "proto3";
+package ryandines.voter.voter;
+
+option go_package = "github.com/ryandines/voter/x/voter/types";
+
+import "gogoproto/gogo.proto";
+
+message Vote {
+  string creator = 1;
+  string id = 2;
+  string pollID = 3; 
+  string value = 4; 
+}
+
+message MsgCreateVote {
+  string creator = 1;
+  string pollID = 2; 
+  string value = 3; 
+}
+
+message MsgUpdateVote {
+  string creator = 1;
+  string id = 2;
+  string pollID = 3; 
+  string value = 4; 
+}
+
+message MsgDeleteVote {
+  string creator = 1;
+  string id = 2;
+}
