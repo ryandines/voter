@@ -2,13 +2,14 @@
   <footer>
     <div class="container">
       <router-link class="logo-font" :to="{ name: 'home', params: {} }">
-        conduit
+         Distributed Indelible Election Ledger 
       </router-link>
       <span class="attribution">
-        An interactive learning project from
-        <a rel="noopener noreferrer" target="blank" href="https://thinkster.io"
-          >Thinkster</a
-        >. Code &amp; design licensed under MIT.
+        The safest way to record elections.
+        Engineered with the Cosmos SDK.
+        <a rel="noopener noreferrer" target="blank" href="https://docs.cosmos.network/"
+          >Read more here.
+        </a>
       </span>
     </div>
   </footer>

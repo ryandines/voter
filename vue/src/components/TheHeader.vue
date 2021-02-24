@@ -4,27 +4,19 @@
       <router-link class="navbar-brand" :to="{ name: 'home' }">
         Tokens
       </router-link>
+
               <!-- v-if="!isAuthenticated"  -->
       <ul 
-        class="nav navbar-nav pull-xs-right">
-        <!-- <li class="nav-item">
-          <router-link
-            class="nav-link"
-            active-class="active"
-            exact
-            :to="{ name: 'home' }"
-          >
-            Home
-          </router-link>
-        </li> -->
+        class="nav navbar-nav pull-xs-right ml-5">
         <li class="nav-item">
           <router-link
             class="nav-link"
             active-class="active"
             exact
-            :to="{ name: 'login' }"
+            :to="{ name: 'poll' }"
           >
-            <i class="ion-compose"></i>Sign in
+          <i class="ion-compose"></i>
+            Manage Polls
           </router-link>
         </li>
         <li class="nav-item">
@@ -32,12 +24,15 @@
             class="nav-link"
             active-class="active"
             exact
-            :to="{ name: 'register' }"
+            :to="{ name: 'vote' }"
           >
-            <i class="ion-compose"></i>Sign up
+            <i class="ion-compose"></i>Vote
           </router-link>
         </li>
       </ul>
+      <div class="signin">
+       <sp-sign-in />
+      </div>
       <!-- <ul v-else class="nav navbar-nav pull-xs-right">
         <li class="nav-item">
           <router-link
@@ -85,14 +80,27 @@
     </div>
   </nav>
 </template>
-
+<style scoped>
+.signin{
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+}
+.ml-5{
+  margin-left: 1.5rem;
+}
+</style>
 <script>
 import { mapGetters } from "vuex";
+import * as sp from "@tendermint/vue";
 
 export default {
   name: "RwvHeader",
   computed: {
     ...mapGetters(["currentUser", "isAuthenticated"])
+  },
+  components: {
+    ...sp
   }
 };
 </script>

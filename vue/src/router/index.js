@@ -2,27 +2,24 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Index from "../views/Index.vue";
 import Poll from "../views/Poll.vue";
+import Vote from "../views/Vote.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/login",
-    name: "login",
-    component: Index,
-  },
-  {
-    path: "/register",
-    name: "register",
+    path: "/poll",
+    name: "poll",
     component: Poll,
   },
   {
-    path: "/home",
-    name: "home",
-    component: Index,
+    path: "/vote",
+    name: "vote",
+    component: Vote,
   },
   {
     path: "/",
+    name: "home",
     component: Index,
   },
 ];

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="sp-container">
-      <sp-sign-in />
+      <!-- <sp-sign-in /> -->
       <sp-bank-balances path="ryandines.voter.voter" />
       <sp-token-send /> 
       <!-- this line is used by starport scaffolding # 4 -->
